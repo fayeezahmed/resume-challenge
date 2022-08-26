@@ -1,42 +1,28 @@
 import json
+import boto3
 
-# import requests
-
+TABLE_NAME='my-table'
+dynamodb = boto3.resource('dynamodb')
 
 def lambda_handler(event, context):
-    """Sample pure Lambda function
-
-    Parameters
-    ----------
-    event: dict, required
-        API Gateway Lambda Proxy Input Format
-
-        Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
-
-    context: object, required
-        Lambda Context runtime methods and attributes
-
-        Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
-
-    Returns
-    ------
-    API Gateway Lambda Proxy Output Format: dict
-
-        Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
-    """
-
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
-
-    #     raise e
+    table = dynamodb.Table(TABLE_NAME)
+    item = table.get_item(Key={
+        'MyPrimaryKey': 'Number of Hits'
+    })
+    
+    try:
+        count = item['Item']['Count'] + 1
+    except KeyError as e:
+        print('Count key not found, so assuming it is the first hit')
+        count = 1
+    
+    res = table.put_item(Item={'MyPrimaryKey': 'Number of Hits', 'AnalyticsValue': count})
+    res["Count"] = str(count)
 
     return {
-        "statusCode": 200,
-        "body": json.dumps({
-            "message": "hello world",
-            # "location": ip.text.replace("\n", "")
-        }),
+        'statusCode': res["ResponseMetadata"]["HTTPStatusCode"],
+        # I needed to pass the headers like this as this is a lambda proxy integration with API gateway.
+        # This headers gets passed directly to the client and without it - I get cors issue.
+        'headers': {'Access-Control-Allow-Origin': '*'},
+        'body': json.dumps({'count': str(count)})
     }
