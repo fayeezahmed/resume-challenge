@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   resumeChallenge
@@ -34,8 +34,8 @@ Resources:
           Properties:
             Auth:
               Authorizer: null
-            Path: /hello
-            Method: get
+            Path: /hit
+            Method: post
             RequestParameters:
               - method.request.header.Access-Control-Allow-Origin
 
@@ -46,7 +46,6 @@ Resources:
         Name: MyPrimaryKey
         Type: String
       TableName: my-table
-
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
