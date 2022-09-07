@@ -11,7 +11,8 @@ def lambda_handler(event, context):
     })
     
     try:
-        count = item['Item']['Count'] + 1
+        count = item['Item']['AnalyticsValue'] + 1
+        print(count)
     except KeyError as e:
         print('Count key not found, so assuming it is the first hit')
         count = 1
