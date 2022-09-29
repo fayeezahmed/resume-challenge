@@ -1,7 +1,7 @@
 import json
 import boto3
 
-TABLE_NAME='my-table'
+TABLE_NAME='fayeez-resume-challenge'
 dynamodb = boto3.resource('dynamodb')
 
 def lambda_handler(event, context):
