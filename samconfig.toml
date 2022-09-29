@@ -2,9 +2,9 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "HelloWorldSamDeploy"
+stack_name = "FayeezResumeSamDeploy"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-ti8jdnsgt1dw"
-s3_prefix = "HelloWorldSamDeploy"
+s3_prefix = "FayeezResumeSamDeploy"
 region = "eu-west-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
