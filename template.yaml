@@ -12,7 +12,7 @@ Globals:
     Tracing: Active
     Environment:
       Variables:
-        TABLE_NAME: my-table
+        TABLE_NAME: fayeez-resume-table
   Api:
     TracingEnabled: True
 
