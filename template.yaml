@@ -45,7 +45,7 @@ Resources:
       PrimaryKey:
         Name: MyPrimaryKey
         Type: String
-      TableName: my-table
+      TableName: fayeez-resume-table
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
