@@ -63,7 +63,7 @@ Resources:
             RedirectRule:
               HostName: fayeezresumechallenge.com
               ReplaceKeyPrefixWith: report-404/
-      DeletionPolicy: Retain
+    DeletionPolicy: Retain
 
 
 Outputs:
