@@ -92,6 +92,23 @@ Resources:
         RedirectAllRequestsTo:
           HostName: !Ref FrontEndBucket
 
+  FrontEndBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontEndBucket
+      PolicyDocument:
+        Statement:
+          -
+            Action:
+              - s3:*
+            Effect: Allow
+            Resource:
+              - !Sub arn:aws:s3:::${FrontEndBucket}
+              - !Sub arn:aws:s3:::${FrontEndBucket}/*
+            Principal:
+              AWS:
+                - '*'
+
   myDNS:
     Type: AWS::Route53::RecordSetGroup
     Properties:
