@@ -20,6 +20,8 @@ Parameters:
     Description: Domain name for your website (example.com)
     Type: String
 
+
+# More info on mappings: https://docs.aws.amazon.com/general/latest/gr/s3.html#s3_website_region_endpoints
 Mappings:
   RegionMap:
     eu-west-1:
