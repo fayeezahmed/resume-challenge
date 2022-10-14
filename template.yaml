@@ -49,7 +49,7 @@ Resources:
   FrontEndBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: "FayeezResumeChallengeBucket"
+      BucketName: FayeezResumeChallengeBucket
       AccessControl: PublicRead
       MetricsConfigurations:
         - Id: EntireBucket
@@ -81,14 +81,14 @@ Outputs:
     Value: !GetAtt FayeezResumeFunctionRole.Arn
   WebsiteURL:
     Value: !GetAtt
-      - S3Bucket
+      - FayeezResumeChallengeBucket
       - WebsiteURL
     Description: URL for website hosted on S3
-  S3BucketSecureURL:
+  FayeezResumeChallengeBucketSecureURL:
     Value: !Join
       - ''
       - - 'https://'
         - !GetAtt
-          - S3Bucket
+          - FayeezResumeChallengeBucket
           - DomainName
     Description: Name of S3 bucket to hold website content
