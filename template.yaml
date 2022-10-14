@@ -65,7 +65,7 @@ Resources:
   FrontEndBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: fayeez-resume-challenge-bucket
+      BucketName: !Ref RootDomainName
       AccessControl: PublicRead
       MetricsConfigurations:
         - Id: EntireBucket
