@@ -2,7 +2,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   resumeChallenge
-
   Sample SAM Template for resumeChallenge
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
@@ -47,6 +46,26 @@ Resources:
         Type: String
       TableName: fayeez-resume-table
 
+  FrontEndBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: "FayeezResumeChallengeBucket"
+      AccessControl: PublicRead
+      MetricsConfigurations:
+        - Id: EntireBucket
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+        RoutingRules:
+          - RoutingRuleCondition:
+              HttpErrorCodeReturnedEquals: '404'
+              KeyPrefixEquals: out1/
+            RedirectRule:
+              HostName: fayeezresumechallenge.com
+              ReplaceKeyPrefixWith: report-404/
+      DeletionPolicy: Retain
+
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
@@ -60,3 +79,16 @@ Outputs:
   FayeezResumeFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt FayeezResumeFunctionRole.Arn
+  WebsiteURL:
+    Value: !GetAtt
+      - S3Bucket
+      - WebsiteURL
+    Description: URL for website hosted on S3
+  S3BucketSecureURL:
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !GetAtt
+          - S3Bucket
+          - DomainName
+    Description: Name of S3 bucket to hold website content
