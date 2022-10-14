@@ -80,15 +80,11 @@ Outputs:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt FayeezResumeFunctionRole.Arn
   WebsiteURL:
-    Value: !GetAtt
-      - FayeezResumeChallengeBucket
-      - WebsiteURL
+    Value: !GetAtt FayeezResumeChallengeBucket.WebsiteURL
     Description: URL for website hosted on S3
   FayeezResumeChallengeBucketSecureURL:
     Value: !Join
       - ''
       - - 'https://'
-        - !GetAtt
-          - FayeezResumeChallengeBucket
-          - DomainName
+        - !GetAtt FayeezResumeChallengeBucket.DomainName
     Description: Name of S3 bucket to hold website content
