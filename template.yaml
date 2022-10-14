@@ -14,6 +14,22 @@ Globals:
         TABLE_NAME: fayeez-resume-table
   Api:
     TracingEnabled: True
+Parameters:
+  RootDomainName:
+    Default: fayeezresumechallenge.com
+    Description: Domain name for your website (example.com)
+    Type: String
+
+
+# More info on mappings: https://docs.aws.amazon.com/general/latest/gr/s3.html#s3_website_region_endpoints
+Mappings:
+  RegionMap:
+    eu-west-1:
+      S3hostedzoneID: Z1BKCTXD74EZPE
+      websiteendpoint: s3-website-eu-west-1.amazonaws.com
+    eu-west-2:
+      S3hostedzoneID: Z3GKZC51ZF0DB4
+      websiteendpoint: s3-website.eu-west-2.amazonaws.com
 
 Resources:
   FayeezResumeFunction:
@@ -61,10 +77,43 @@ Resources:
               HttpErrorCodeReturnedEquals: '404'
               KeyPrefixEquals: out1/
             RedirectRule:
-              HostName: fayeezresumechallenge.com
+              HostName: !Ref RootDomainName
               ReplaceKeyPrefixWith: report-404/
     DeletionPolicy: Retain
 
+  WWWBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub
+          - www.${Domain}
+          - Domain: !Ref RootDomainName
+      AccessControl: BucketOwnerFullControl
+      WebsiteConfiguration:
+        RedirectAllRequestsTo:
+          HostName: !Ref FrontEndBucket
+
+  myDNS:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: !Sub 
+          - ${Domain}.
+          - Domain: !Ref RootDomainName
+      Comment: Zone apex alias.
+      RecordSets:
+      - 
+        Name: !Ref RootDomainName
+        Type: A
+        AliasTarget:
+          HostedZoneId: !FindInMap [ RegionMap, !Ref 'AWS::Region', S3hostedzoneID]
+          DNSName: !FindInMap [ RegionMap, !Ref 'AWS::Region', websiteendpoint]
+      -
+        Name: !Sub
+            - www.${Domain}
+            - Domain: !Ref RootDomainName
+        Type: CNAME
+        TTL: 900
+        ResourceRecords:
+        - !GetAtt WWWBucket.DomainName
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
