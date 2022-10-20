@@ -32,6 +32,12 @@ Mappings:
       websiteendpoint: s3-website.eu-west-2.amazonaws.com
 
 Resources:
+  DomainCertificate: 
+    Type: "AWS::CertificateManager::Certificate"
+    Properties: 
+      DomainName: *.fayeezresumechallenge.com
+      ValidationMethod: DNS
+
   FayeezResumeFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -53,7 +59,6 @@ Resources:
             Method: post
             RequestParameters:
               - method.request.header.Access-Control-Allow-Origin
-
   MyTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
