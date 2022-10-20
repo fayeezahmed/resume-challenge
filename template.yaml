@@ -128,9 +128,9 @@ Resources:
             - www.${Domain}
             - Domain: !Ref RootDomainName
         Type: CNAME
-        TTL: 900
+        TTL: 60
         ResourceRecords:
-        - !GetAtt WWWBucket.DomainName
+        - !GetAtt WWWBucket.RegionalDomainName
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -156,3 +156,7 @@ Outputs:
     Description: Name of S3 bucket to hold website content
   WWWDomainNameURL:
     Value: !GetAtt WWWBucket.DomainName
+  RootDomainName:
+    Value: !Ref RootDomainName
+    
+# 172800
