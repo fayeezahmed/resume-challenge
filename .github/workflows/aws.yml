@@ -24,6 +24,7 @@ jobs:
       - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
   upload-frontend:
     runs-on: ubuntu-latest
+    needs: setup-infra
     steps:
       - uses: actions/checkout@v3
       - uses: aws-actions/configure-aws-credentials@v1
