@@ -35,7 +35,7 @@ Resources:
   DomainCertificate: 
     Type: "AWS::CertificateManager::Certificate"
     Properties: 
-      DomainName: *.fayeezresumechallenge.com
+      DomainName: '*.fayeezresumechallenge.com'
       ValidationMethod: DNS
 
   FayeezResumeFunction:
